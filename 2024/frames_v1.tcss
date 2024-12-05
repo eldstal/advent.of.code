@@ -8,33 +8,46 @@
 }
 
 #bottom {
-  height: 3;
+  height: auto;
   width: 100%;
-  border: $secondary round;
+  border: $secondary ascii;
+	background: $panel;
+
+  .progress_row {
+    height: 1;
+
+    .progress_label {
+      width: 8;
+    }
+
+    ProgressBar {
+      height: 1;
+      width: 1fr;
+      margin: 0 1;
+
+      Bar {
+        width: 1fr;
+        margin: 0 1;
+      }
+
+      PercentageStatus{
+        width: 4;
+      }
+    }
+  }
 }
 
-#progress_bar {
-  width: 100%;
-  margin: 0 1;
-
-  Bar {
-    width: 1fr;
-  }
-
-  PercentageStatus{
-    width: 4;
-  }
-}
 
 
 #mainpane {
   height: 100%;
   width: 1fr;
-  border: round;
+  border: $accent ascii;
+	background: $surface;
 }
 
 #rightside {
   width: 30%;
   height: 100%;
-  border: round;
+  border: $accent ascii;
 }

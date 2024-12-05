@@ -1,6 +1,7 @@
 #!/usr/bin/env python3
 import aoc
 import frames
+import asyncio
 
 DAY=1
 
@@ -11,9 +12,16 @@ answer_a = 0
 
 class App01(frames.AdventApp):
 
-  def on_ready(self, size):
-    self.progress("Input", 15, 20)
-    
+  async def on_ready(self, size):
+    self.run_worker(self.load_input(), exclusive=True)
+
+  async def load_input(self):
+
+    for l in range(len(lines)):
+      self.progress("input", "Input", l, len(lines))
+      await asyncio.sleep(0.3)
+
+    self.progress("parse", "Parse", 5, 20)
 
 
 window = App01()

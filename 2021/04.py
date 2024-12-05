@@ -11,9 +11,7 @@ def dutt(numbers, dutts, call):
 def has_bingo(dutts):
   row = np.any( [ np.all(dutts[r,:]) for r in range(5) ] )
   col = np.any( [ np.all(dutts[:,c]) for c in range(5) ] )
-  diag1 = np.all(np.diag(dutts))
-  diag2 = np.all(np.diag(np.transpose(dutts)))
-  return row or col or diag1 or diag2
+  return row or col
 
 def card_score(numbers, dutts, call):
   total = np.sum(numbers[dutts == False])
@@ -35,13 +33,14 @@ def card_dump(numbers, dutts, call):
 DAY=4
 
 _, lines = aoc.get_input(DAY)
-#_, lines = aoc.get_test_input(DAY)
+_, lines = aoc.get_test_input(DAY)
 
 # Each call is just a number
 # Each card is a pair of (numbers, dutts)
 calls = [ int(n) for n in lines[0].split(",") ]
 cards = [ ]
 
+# Parse bingo cards out of the remaining input
 for start in range(1, len(lines), 5):
   card_data = lines[start:start+5]
   card_cells = [ [ int(n) for n in row.split() ] for row in card_data ]
@@ -50,23 +49,9 @@ for start in range(1, len(lines), 5):
   cards.append( (card_numbers, card_dutts) )
 
 
-def find_winner(calls, cards):
-  for call in calls:
-    print(call)
-    for i in range(len(cards)):
-      numbers,dutts = cards[i]
-      dutts = dutt(numbers, dutts, call)
-      cards[i] = (numbers, dutts)
-      if(has_bingo(dutts)):
-        print("BINGO!")
-        card_dump(numbers, dutts, call)
-        return card_score(numbers, dutts, call)
-
-
-
-
-def find_loser(calls, cards):
+def find_winners(calls, cards):
   eliminated = [ ]
+  scores = [ ]
   for call in calls:
     print(call)
     for i in range(len(cards)):
@@ -75,15 +60,21 @@ def find_loser(calls, cards):
       numbers,dutts = cards[i]
       dutts = dutt(numbers, dutts, call)
       cards[i] = (numbers, dutts)
+
       if(has_bingo(dutts)):
         print("BINGO!")
         card_dump(numbers, dutts, call)
-        eliminated.append(i)
-        if len(eliminated) == len(cards):
-          return card_score(numbers, dutts, call)
 
-answer_a = find_winner(calls, cards)
-answer_b = find_loser(calls, cards)
+        eliminated.append(i)
+        scores.append(card_score(numbers, dutts, call))
+
+        if len(eliminated) == len(cards):
+          return list(zip(scores, eliminated))
+
+winners = find_winners(calls, cards)
+
+answer_a = winners[0][0]
+answer_b = winners[-1][0]
 
 
 print(f"Part 1: {answer_a}")
@@ -91,3 +82,4 @@ print(f"Part 1: {answer_a}")
 
 print(f"Part 2: {answer_b}")
 #print(aoc.post_result(day=DAY, part=2, value=answer_b, year=2021))
+
