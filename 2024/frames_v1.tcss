@@ -1,0 +1,40 @@
+#body {
+  width: 100%;
+  height: 100%;
+}
+
+#top {
+  width: 100%;
+}
+
+#bottom {
+  height: 3;
+  width: 100%;
+  border: $secondary round;
+}
+
+#progress_bar {
+  width: 100%;
+  margin: 0 1;
+
+  Bar {
+    width: 1fr;
+  }
+
+  PercentageStatus{
+    width: 4;
+  }
+}
+
+
+#mainpane {
+  height: 100%;
+  width: 1fr;
+  border: round;
+}
+
+#rightside {
+  width: 30%;
+  height: 100%;
+  border: round;
+}
